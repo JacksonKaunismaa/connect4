@@ -438,7 +438,7 @@ class Connect4NN(object):
 # noinspection PyPep8Naming
 def eval_AB(board_pos, last_move):
     output = subprocess.run(  # get AB move
-                    [os.path.join(os.path.dirname(__file__), "AB_with_eval.exe"), cb.parse_board(board_pos), "W", str(last_move)],
+                    [os.path.join(os.path.dirname(__file__), "c4_AB_combo"), cb.parse_board(board_pos), "W", str(last_move)],
                     stdout=subprocess.PIPE)
     AB_eval = [int(v) for v in output.stdout.decode("utf-8").split()]  # get AB move, eval
     return AB_eval
@@ -454,7 +454,7 @@ def check_tactics(game_board, last_move):
 # noinspection PyPep8Naming
 def AB_move(board_pos, last_move):
     output = subprocess.run(  # get AB move
-        [os.path.join(os.path.dirname(__file__), "connect_4_AB.exe"), cb.parse_board(board_pos.board), "W", str(last_move)],
+        [os.path.join(os.path.dirname(__file__), "c4_AB_combo"), cb.parse_board(board_pos.board), "W", str(last_move)],
         stdout=subprocess.PIPE)
     numeric_move = int(output.stdout.decode("utf-8"))  # get AB move
     if numeric_move in board_pos.get_legal():  # make sure the AB move is legal, otherwise play a random legal move

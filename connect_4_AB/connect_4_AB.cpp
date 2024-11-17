@@ -24,20 +24,22 @@ double time_diff(timespec one, timespec two){
 
 int main(int argc, char **argv)
 {
-//	if (argc > 1)  // for the alpha zero competition, this converts from python to c++ and returns AB search move
-//	{
-//
-//		uint64_t white_board = 0;
-//		uint64_t black_board = 0;
-//		Players playing_rn;
-//		bitboard_parser(&white_board, &black_board, argv[1]);
-//		if (argv[2][0] == 'W') playing_rn = Players::WHITE;
-//		else playing_rn = Players::BLACK;
-//		int prev_move = atoi(argv[3]);
-//		BoardState game(&white_board, &black_board, playing_rn);
-//		std::pair<int, int> result = AB_wrapper(game, 12, -32767, 32767, prev_move);
-//		std::cout << result.first << " " << result.second;
-//	}
+	#if defined(COMBO_ENGINE)
+		if (argc > 1)  // for the alpha zero competition, this converts from python to c++ and returns AB search move
+		{
+
+			uint64_t white_board = 0;
+			uint64_t black_board = 0;
+			Players playing_rn;
+			bitboard_parser(&white_board, &black_board, argv[1]);
+			if (argv[2][0] == 'W') playing_rn = Players::WHITE;
+			else playing_rn = Players::BLACK;
+			int prev_move = atoi(argv[3]);
+			BoardState game(&white_board, &black_board, playing_rn);
+			std::pair<int, int> result = AB_wrapper(game, 12, -32767, 32767, prev_move);
+			std::cout << result.first << " " << result.second;
+		}
+	#endif
 
 
 	 uint64_t zero0 = 0;
@@ -81,15 +83,15 @@ int main(int argc, char **argv)
 	 	count++;
 		clock_gettime(CLOCK_MONOTONIC, &start);
 	 	result = (AB_wrapper(game, static_depth, -32767, 32767, pmove));  // returns (best_move, eval)
-		// std::cout << "Did " << game.total_moves << " moves" << std::endl;
+		std::cout << "Did " << game.total_moves << " moves" << std::endl;
 		clock_gettime(CLOCK_MONOTONIC, &end);
 
 	 	game.move(result.first);
 	 	if (game.eval(result.first) == Players::BLACK) { std::cout << "You lose!" << std::endl; break; }
 	 	count++;
 
-	 	// std::cout << "Move: " << (int)result.first << std::endl;
-	 	// std::cout << "Eval: " << (int)result.second << std::endl;
+	 	std::cout << "Move: " << (int)result.first << std::endl;
+	 	std::cout << "Eval: " << (int)result.second << std::endl;
 	 	std::cout << "Took: " << time_diff(end, start) << " seconds" << std::endl;
 	 	if (count >= 64) { std::cout << "Congrats you got a draw!" << std::endl;  break; }
 	 }

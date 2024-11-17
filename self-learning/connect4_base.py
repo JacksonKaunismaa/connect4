@@ -12,7 +12,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 The whole point of this project is that we can get the nn to learn how to play this game (in this example, connect4) and see if it can learn to
 beat a simple 'stupid' connect 4 engine that uses the tradiotional alpha beta search approach to pick the 'best' move from a given state.
 This AB engine uses no domain knowledge (cuz i suck at connect 4) apart from the rules of what a win/loss/draw is, but is nevertheless
-very strong (you can try to play against it in the connect4_AB_human.exe), and was an interesting challenge for the NN to beat, using
+very strong (you can try to play against it at connect4_AB/c4_AB_playable), and was an interesting challenge for the NN to beat, using
 tabula rasa reinforcement learning!"""
 
 
@@ -222,9 +222,9 @@ class BoardState(object):
 
 
 def parse_board(np_board):
-    """Auxillary function to parse a BoardState (but actually takes an np board as input) into a format understandable by connect4_AB.exe
+    """Auxillary function to parse a BoardState (but actually takes an np board as input) into a format understandable by c4_AB_combo
     so it can load the current board state and return an eval of that using its own algorithm (communication between the python BoardState
-    and the one defined in connect4_AB.exe)"""
+    and the one defined in c4_AB_combo)"""
     board_str = ""
     for x in range(8):
         for y in range(8):

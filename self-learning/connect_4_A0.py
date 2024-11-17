@@ -38,7 +38,7 @@ def play_AB(games, proc_id):
         for n in range(64):  # play out 64 moves
             if switch:
                 output = subprocess.run(  # get AB move
-                    ["./connect_4_AB.exe", cb.parse_board(game.board), "W", str(previous_move)],
+                    ["./c4_AB_combo", cb.parse_board(game.board), "W", str(previous_move)],
                     stdout=subprocess.PIPE)
                 numeric_move = int(output.stdout.decode("utf-8"))  # get AB move
                 if numeric_move in game.get_legal():  # make sure the AB move is legal, otherwise play a random legal move
