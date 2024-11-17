@@ -7,6 +7,7 @@ class BoardState // 8x8 connect 4 board
 		uint64_t BLACK_PIECES;   // see stockfish board representation "bitboards"
 		Players PLAYING;
 		int COUNT;  // # of 2 in a row streaks that white has - ones black has
+		long total_moves;
 		//char COUNT3;  // # of 3 in a row streaks that white has - ones black has
 		BoardState(uint64_t *white = 0, uint64_t *black = 0, Players whose_turn = Players::WHITE, int count = 0);  // default constuctor (note same name as class, and no return type)
 	void print();  // representation of the current board state using W and B characters as the pieces

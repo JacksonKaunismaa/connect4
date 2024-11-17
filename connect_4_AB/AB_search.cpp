@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 int alpha_beta_search(BoardState &board_state, char depth, int alpha, int beta, char last)   // returns an eval
-{ 
+{
 	Players is_terminal = board_state.eval(last);
 	if ((depth == 0) || (is_terminal != Players::NONE))
 	{
@@ -14,7 +14,7 @@ int alpha_beta_search(BoardState &board_state, char depth, int alpha, int beta, 
 			if (!board_state.is_illegal(m))
 			{
 				board_state.move(m);
-				//board_state.counts_move(m);  // update "streak" counter 
+				//board_state.counts_move(m);  // update "streak" counter
 				int new_val = alpha_beta_search(board_state, depth - 1, alpha, beta, m);
 				//board_state.counts_move(m, true);   // unupdate "streak" counter (symmetric function! ie. if f(x) = y, f(y) = x)
 				board_state.unmove(m);
@@ -46,6 +46,7 @@ int alpha_beta_search(BoardState &board_state, char depth, int alpha, int beta, 
 std::pair<char, int> AB_wrapper(BoardState &board_state, char depth, int alpha, int beta, char last) // assuming depth != 0 (returns best_move, eval)
 {
 	char best_move = 4;
+	board_state.total_moves = 0;
 	if (board_state.PLAYING == Players::WHITE)    // maximizing players turn
 	{
 		update_wb_moves(last, true);
@@ -113,7 +114,7 @@ void update_wb_moves(char last, bool white_to_move)  // changes move order to be
 	}
 	else {
 		std::swap(black_moves[0], black_moves[std::distance(std::begin(black_moves), std::find(std::begin(black_moves), std::end(black_moves), last))]);
-		if (0 < last && last < 7) { 
+		if (0 < last && last < 7) {
 			std::swap(black_moves[1], black_moves[std::distance(std::begin(black_moves), std::find(std::begin(black_moves), std::end(black_moves), last - 1))]);
 			std::swap(black_moves[2], black_moves[std::distance(std::begin(black_moves), std::find(std::begin(black_moves), std::end(black_moves), last + 1))]);
 		}

@@ -12,10 +12,11 @@ void show_bin(uint64_t inpt)  // helper function for displaying 64 bit binary nu
 
 BoardState::BoardState(uint64_t *white, uint64_t *black, Players whose_turn, int count) // default constructor
 {
-	WHITE_PIECES = *white; 
+	WHITE_PIECES = *white;
 	BLACK_PIECES = *black;
 	PLAYING = whose_turn;
 	COUNT = count;
+	total_moves = 0;
 	//COUNT3 = count3;
 }
 
@@ -42,6 +43,7 @@ void BoardState::print()
 
 void BoardState::move(const unsigned char &move)  // efficient because this if statement has very predictable pattern (WBWBWBWBWBWBWBWBWBWBWB...)
 {
+	total_moves++;
 	if (PLAYING == Players::WHITE)
 	{
 		WHITE_PIECES |= (right1 << (8 * (7 - move) + col_height[((WHITE_PIECES | BLACK_PIECES) & (cols[move])) >> (8 * (7 - move))]));
@@ -79,7 +81,7 @@ void BoardState::counts_move(const char &last_move, bool is_rev)
 ;
 		// <ADDITIVE PARTS>
 		//		<ROW PARTS>
-		if (last_move != 7 && (WHITE_PIECES & (current_piece >> 8)))  // detected something to the right 1 col over 
+		if (last_move != 7 && (WHITE_PIECES & (current_piece >> 8)))  // detected something to the right 1 col over
 		{
 			if (0 <= last_move && last_move <= 4)  diff += (!(BLACK_PIECES & (row_rl >> (current_shift + 16)))) ? 1 : 0;		// check if 2 empty to the right of the group
 			if (1 <= last_move && last_move <= 5)  diff += (!(BLACK_PIECES & (row_split >> (current_shift - 8)))) ? 1 : 0;     // check empty either side of group of piec
@@ -101,12 +103,12 @@ void BoardState::counts_move(const char &last_move, bool is_rev)
 		}
 
 		if (last_move != 6 && last_move != 7 && (WHITE_PIECES & (current_piece >> 16)))  // deteced something to the right 2 col over
-		{ 
+		{
 			if (0 <= last_move && last_move <= 4) diff += (BLACK_PIECES & (row_half_split >> (current_shift + 8))) ? 0 : 1;         //     P_D_  check
 			if (1 <= last_move && last_move <= 5) diff += (BLACK_PIECES & (row_half_split >> (current_shift - 8))) ? 0 : 1;        //    _P_D   check
 		}
 		//		</ROW PARTS>
-		//		<COL PARTS>	
+		//		<COL PARTS>
 		if (1 <= this_height && this_height <= 6)   // these are nice and simple
 		{
 			diff += (WHITE_PIECES & (current_piece << 1)) ? 1 : 0;  // since it is known that the one above is empty and the current one is white, we only need to check the one below
@@ -118,7 +120,7 @@ void BoardState::counts_move(const char &last_move, bool is_rev)
 	{
 		// <ADDITIVE PARTS>
 		//		<ROW PARTS>
-		if (last_move != 7 && (BLACK_PIECES & (current_piece >> 8)))  // detected something to the right 1 col over 
+		if (last_move != 7 && (BLACK_PIECES & (current_piece >> 8)))  // detected something to the right 1 col over
 		{
 			if (0 <= last_move && last_move <= 4)  diff += (!(WHITE_PIECES & (row_rl >> (current_shift + 16)))) ? -1 : 0;		// check if 2 empty to the right of the group
 			if (1 <= last_move && last_move <= 5)  diff += (!(WHITE_PIECES & (row_split >> (current_shift - 8)))) ? -1 : 0;     // check empty either side of group of piec
@@ -145,7 +147,7 @@ void BoardState::counts_move(const char &last_move, bool is_rev)
 			if (1 <= last_move && last_move <= 5) diff += (WHITE_PIECES & (row_half_split >> (current_shift - 8))) ? 0 : -1;        //    _P_D   check
 		}
 		//		</ROW PARTS>
-		//		<COL PARTS>	
+		//		<COL PARTS>
 		if (1 <= this_height && this_height <= 6)   // these are nice and simple
 		{
 			diff += (BLACK_PIECES & (current_piece << 1)) ? -1 : 0;  // since it is known that the one above is empty and the current one is white, we only need to check the one below

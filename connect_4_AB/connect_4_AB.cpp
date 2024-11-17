@@ -75,12 +75,13 @@ int main(int argc, char **argv)
 	 			if (!game.is_illegal(pmove)) break;
 	 		std::cout << "Illegal move!" << std::endl;
 	 	}
-	      
+
 	 	game.move(pmove);
 	 	if (game.eval(pmove) == Players::WHITE) { std::cout << "Congrats you win!" << std::endl; break; }
 	 	count++;
 		clock_gettime(CLOCK_MONOTONIC, &start);
 	 	result = (AB_wrapper(game, static_depth, -32767, 32767, pmove));  // returns (best_move, eval)
+		// std::cout << "Did " << game.total_moves << " moves" << std::endl;
 		clock_gettime(CLOCK_MONOTONIC, &end);
 
 	 	game.move(result.first);
