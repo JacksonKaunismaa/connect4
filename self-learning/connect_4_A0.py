@@ -270,7 +270,7 @@ def play_game(agent, global_tree, global_training, c_val, search_iters=1000, sea
     global_training += training
 
 
-def main():
+def main(proc_num):
     my_c = 4.0
     for cnt in range(40):
         if proc_num > 1:
@@ -311,4 +311,4 @@ if __name__ == "__main__":
         proc_num = int(sys.argv[1])
     else:
         proc_num = 1
-    main()
+    main(proc_num)

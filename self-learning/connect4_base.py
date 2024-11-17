@@ -5,6 +5,8 @@ from os.path import join
 import numpy as np
 import c4_nn_agent as c4_nn
 import monte_carlo as mc
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 
 """Sample implementation of a board game (in this case connect4) including procedures for moving, unmoving, checking for wins, etc.
 The whole point of this project is that we can get the nn to learn how to play this game (in this example, connect4) and see if it can learn to
@@ -203,7 +205,7 @@ class BoardState(object):
 
     def human(self):
         ag = c4_nn.Connect4NN("./connect4_models")
-        switch = False
+        switch = bool(np.random.randint(0,2))
         while self.get_legal().size != 0:
             print(self)
             if switch:
@@ -279,55 +281,3 @@ def analyze_data():
         print(BoardState(white_black=sample[0]))
         print(sample[1])
         print(sample[2])
-
-
-def test():
-    """Does a bunch of random testing of various BoardState functions as well as monte carlo tree search, the NN agent, etc."""
-    g = BoardState()
-    # g.human()
-    # quit()
-    g.to_board("""**************************
-| -  -  -  -  -  -  -  - |
-| -  -  -  -  -  -  -  - |
-| -  -  -  -  -  -  -  - |
-| -  -  -  -  -  -  -  - |
-| -  -  -  W  -  -  -  - |
-| -  -  B  B  -  W  -  - |
-| W  W  W  B  -  B  W  - |
-| B  B  W  B  B  W  B  - |
-**************************""")  # turn board string into a BoardState
-    other_g = BoardState()
-    # other_g.move(1)
-    # ag = c4_nn.Connect4NN("./datasetts", log_path="/tmp/tensorflow_logs/c4_why_eval9")  # load the nn agent
-    # # res = ag.bucket_predict([other_g.board, g.board])
-    # # print(res)
-    # # print(res[1])
-    # # print(res[1][0])
-    # # quit()
-    # # data = get_data()
-    # # ag.train_update(data, epochs=5)
-    # # ag.save()
-    # ag.randomly_test()  # see c4_nn_agent.Connect4NN.randomly_test()
-    # # tr = mc.MCTS()  # init game tree
-    # # ag.train_update(get_data(), epochs=5)
-    ag = c4_nn.Connect4NN("./connect4_models", log_path="/tmp/tensorflow_logs/c4_why_eval9")  # load the nn agent
-    ag.play_human()
-    # ag.randomly_test()
-    # print(g)  # print the current board state before it gets evaluated using mcts
-    # print(ag.predict(g))  # print the NN agent's initial prediciton of the policy
-    # # do a bunch of iters, then show the tree statistics and the move selected, to test all relevant systems
-    # tr.search_iter(g, ag, 0, iters=8000, threads=32)
-    # move = np.random.choice(8, p=tr.get_policy(g, temperature=0.9))
-    # while move not in g.get_legal():
-    #     move = np.random.choice(8, p=tr.get_policy(g, temperature=0.9))
-    # print("distr = ", list(tr.get_policy(g)))
-    # print("chosen move: ", move)
-    # print("eval: ", tr.get_eval(g))
-    # print("q:", list(tr.Q[hash(g)]))
-    # print("w:", list(tr.W[hash(g)]))
-    # print("p:", list(tr.P[hash(g)]))
-    # print("n:", list(tr.N[hash(g)]))
-
-
-if __name__ == "__main__":
-    test()

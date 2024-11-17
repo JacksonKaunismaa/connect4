@@ -393,6 +393,47 @@ class Connect4NN(object):
             switch = not switch
         print("You got a draw!")
 
+    def play_AB(self):
+        import random
+        switch = bool(random.randint(0,1))
+        g = cb.BoardState()
+        pmove = 0
+        for _ in range(64):
+            if switch:
+                print(g.reverse())
+                ab_move = AB_move(g, pmove)
+                print(f"eval = {check_tactics(g, pmove)}")
+                g.move(ab_move)
+                pmove = ab_move
+                if g.move_check(ab_move) == 1:
+                    print(g)
+                    print("You lost!")
+                    return
+            else:
+                print(g)
+                try:
+                    human_move = int(input("pick a move to play: "))
+                except ValueError:
+                    human_move = -1
+                while human_move not in g.get_legal():
+                    print("Invalid move")
+                    try:
+                        human_move = int(input("pick a move to play: "))
+                    except ValueError:
+                        pass
+                g.move(human_move)
+                try:
+                    print(f"eval = {check_tactics(g, human_move)}")
+                except KeyError:
+                    print("Unexpected move!")
+                pmove = human_move
+                if g.move_check(human_move) == 1:
+                    print("You won!")
+                    print(g)
+                    return
+            switch = not switch
+        print("You got a draw!")
+
 
 # noinspection PyPep8Naming
 def eval_AB(board_pos, last_move):
